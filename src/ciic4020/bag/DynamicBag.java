@@ -75,15 +75,17 @@ public class DynamicBag implements Bag {
 
 	@Override
 	public Bag moreFrequentThan(Object obj) {
-		Bag newBag = new DynamicBag(this.size());
-		int count = this.count(obj);
-		for(int i = 0; i < this.size(); i++) {
-			if(this.count(this.bag.elements[i]) > count && !this.isMember(newBag)) {
-				newBag.add(this.bag.elements);
-				//return newBag;
+		Bag result = new DynamicBag(this.size());
+		int counter=this.count(obj);
+		for(int i = 0; i<this.size(); i++) {
+			if(this.count(this.bag)>counter) {
+				if(!result.isMember(this.bag)) {
+					result.add(this.bag);
+				}
 			}
+
 		}
-		return newBag;
+		return result;
 	}
 
 }

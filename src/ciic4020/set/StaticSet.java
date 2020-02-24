@@ -145,25 +145,33 @@ public class StaticSet<E> implements Set<E> {
 
 	@Override
 	public boolean equals(Set<E> S2) {
-		for(int i = 0; i< this.size();i++) {
-			if(!S2.isMember((E) this.elements[i])) {
-				return false;
-			}
-		}
-		return true;
+		return (this.difference(S2).isEmpty());
 	}
 	
 	public static boolean checkDisjoint (Object[] sets) {
-		Set s1 = null;
-		Set s2 = null;
-		for(int i = 0; i < sets.length; i++) {
-			 s1 = (Set) sets[i];
-			for(int j = i + 1; j < s1.size(); j++) {
-				 s2 = (Set) sets[j];
+		for(int i=0; i<sets.length; i++) {
+			Set<Integer> target = (Set<Integer>) sets[i];
+			
+			for(int j=i+1; j<sets.length; j++) {
+				Set<Integer> temp = (Set<Integer>) sets[j];
+				
+				if(target.intersection(temp).isEmpty())
+					return true;
+				
 			}
 		}
-		return s1.intersection(s2).isEmpty();
-		
+		return false;
+	}
+
+	@Override
+	public Set<Set<E>> singletonSets() {
+		Set<Set<E>> result = new StaticSet<Set<E>>(this.size());
+		for (E i : this) {
+			Set<E> anotherSet = new DynamicSet<E>(1);
+			anotherSet.add(i);
+			result.add(anotherSet);
+		}
+		return result;
 	}
 
 }
